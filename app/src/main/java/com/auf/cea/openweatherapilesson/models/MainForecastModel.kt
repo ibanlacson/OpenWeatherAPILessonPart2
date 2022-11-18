@@ -6,4 +6,4 @@ data class MainForecastModel(
     var message: Int,
     var city: CityModel,
     var list: List<ForecastModel>
-)
+): java.io.Serializable

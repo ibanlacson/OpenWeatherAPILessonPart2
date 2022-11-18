@@ -10,4 +10,4 @@ data class ForecastModel(
     var visibility: Int,
     var weather: List<Weather>,
     var wind: Wind
-)
+):java.io.Serializable
