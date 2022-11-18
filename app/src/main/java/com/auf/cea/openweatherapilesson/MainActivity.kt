@@ -16,6 +16,7 @@ import com.auf.cea.openweatherapilesson.constants.BASE_IMAGE_URL
 import com.auf.cea.openweatherapilesson.databinding.ActivityMainBinding
 import com.auf.cea.openweatherapilesson.models.ForecastModel
 import com.auf.cea.openweatherapilesson.models.LocationModel
+import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
 import com.auf.cea.openweatherapilesson.services.helper.RetrofitHelper
 import com.auf.cea.openweatherapilesson.services.repository.OpenWeatherAPI
 import com.bumptech.glide.Glide
@@ -85,8 +86,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             txtMinTemp.text = String.format("Min Temp:%s˚C",modelData.main.temp_min)
             txtMaxTemp.text = String.format("Max Temp:%s˚C",modelData.main.temp_max)
             txtHumidity.text = String.format("Humidity: %s%%", modelData.main.humidity)
-            txtDay.text = adapter.getDay(modelData.dt)
-            txtTime.text = adapter.getTime(modelData.dt)
+            txtDay.text = GeneralHelper.getDay(modelData.dt)
+            txtTime.text = GeneralHelper.getTime(modelData.dt)
             Glide.with(this@MainActivity)
                 .load(BASE_IMAGE_URL+weatherData.icon+".png")
                 .override(200, 200)

@@ -13,6 +13,7 @@ import com.auf.cea.openweatherapilesson.constants.BASE_IMAGE_URL
 import com.auf.cea.openweatherapilesson.constants.MODEL_DATA
 import com.auf.cea.openweatherapilesson.databinding.ContentForecastRvBinding
 import com.auf.cea.openweatherapilesson.models.ForecastModel
+import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
 import com.bumptech.glide.Glide
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,8 +30,8 @@ class WeatherAdapter(private var forecastList: ArrayList<ForecastModel>, private
             binding.txtMaxTemp.text = String.format("Max temp: %s˚C", itemData.main.temp_max)
             binding.txtHumidity.text = String.format("Humidity: %s%%", itemData.main.humidity)
             binding.txtFeelsLike.text = String.format("Feels like: %s˚C",itemData.main.feels_like)
-            binding.txtDay.text = getDay(itemData.dt)
-            binding.txtTime.text = getTime(itemData.dt)
+            binding.txtDay.text = GeneralHelper.getDay(itemData.dt)
+            binding.txtTime.text = GeneralHelper.getTime(itemData.dt)
             Glide.with(context)
                 .load(BASE_IMAGE_URL+mainWeatherData.icon+".png")
                 .override(200,200)
@@ -57,14 +58,6 @@ class WeatherAdapter(private var forecastList: ArrayList<ForecastModel>, private
 
     override fun getItemCount(): Int {
         return forecastList.size
-    }
-
-    fun getDay(timeStamp: Long): String{
-        return SimpleDateFormat("EEEE", Locale.ENGLISH).format(timeStamp * 1000)
-    }
-
-    fun getTime(timeStamp: Long): String{
-        return SimpleDateFormat("hh:mm aa", Locale.ENGLISH).format(timeStamp * 1000)
     }
 
     fun updateData(forecastList: ArrayList<ForecastModel>){
