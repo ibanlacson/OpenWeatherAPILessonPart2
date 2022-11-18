@@ -5,4 +5,4 @@ data class Weather(
     var icon: String,
     var id: Int,
     var main: String
-)
+):java.io.Serializable

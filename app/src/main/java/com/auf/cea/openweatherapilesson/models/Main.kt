@@ -10,4 +10,4 @@ data class Main(
     var temp_kf: Double,
     var temp_max: Double,
     var temp_min: Double
-)
+):java.io.Serializable

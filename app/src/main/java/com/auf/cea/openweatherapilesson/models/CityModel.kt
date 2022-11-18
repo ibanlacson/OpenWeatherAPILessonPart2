@@ -9,4 +9,4 @@ data class CityModel(
     var sunrise: Int,
     var sunset: Int,
     var timezone: Int
-)
+):java.io.Serializable
