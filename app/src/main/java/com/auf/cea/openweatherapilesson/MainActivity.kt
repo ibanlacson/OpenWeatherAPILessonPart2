@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
 
         locationList = arrayListOf(
             LocationModel("Angeles City",15.145549, 120.5946859),
-            LocationModel("Makati City", 14.557076,121.0171529),
+            LocationModel("Makati City", 14.5546597,121.0243391),
             LocationModel("Cebu City",10.315542,123.8848808)
         )
 
