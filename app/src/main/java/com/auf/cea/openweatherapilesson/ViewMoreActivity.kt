@@ -46,7 +46,7 @@ class ViewMoreActivity : AppCompatActivity() {
                 txtWeatherType.text = weatherData.main
                 txtCollatedTemp.text = String.format("Min: %s°C | Max: %s°C",modelData.main.temp_min,modelData.main.temp_max)
                 Glide.with(this@ViewMoreActivity)
-                    .load(BASE_IMAGE_URL+weatherData.icon+".png")
+                    .load(BASE_IMAGE_URL+weatherData.icon+"@2x.png")
                     .override(200, 200)
                     .into(imgIcon)
 
