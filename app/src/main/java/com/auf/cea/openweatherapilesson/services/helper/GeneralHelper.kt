@@ -16,7 +16,7 @@ class GeneralHelper {
         }
 
         fun getDate(timeStamp: Long): String{
-            return SimpleDateFormat("MMMM DD", Locale.ENGLISH).format(timeStamp * 1000)
+            return SimpleDateFormat("MMMM d", Locale.ENGLISH).format(timeStamp * 1000)
         }
 
         fun getPop(population: Int): String{

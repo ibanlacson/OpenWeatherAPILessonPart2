@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="@color/bg_light_gray">
+    android:background="@color/bg_grayish_black">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -144,7 +144,11 @@
         android:id="@+id/rv_forecast"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="40dp"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:background="@drawable/rv_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

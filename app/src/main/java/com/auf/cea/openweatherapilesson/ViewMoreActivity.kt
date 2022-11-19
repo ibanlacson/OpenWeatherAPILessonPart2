@@ -39,7 +39,7 @@ class ViewMoreActivity : AppCompatActivity() {
 
                 // LL1
                 txtCity.text = mainData.city.name
-                txtTimeAndDate.text = String.format("%s, %s | %s", dateValue, dayValue, timeValue)
+                txtTimeAndDate.text = String.format("%s | %s | %s", dateValue, dayValue, timeValue)
 
                 // LL2
                 txtTemp.text = String.format("%s°C",modelData.main.temp)
