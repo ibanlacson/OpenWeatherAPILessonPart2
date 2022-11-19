@@ -5,21 +5,22 @@ import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.auf.cea.openweatherapilesson.MainActivity
 import com.auf.cea.openweatherapilesson.ViewMoreActivity
 import com.auf.cea.openweatherapilesson.constants.BASE_IMAGE_URL
+import com.auf.cea.openweatherapilesson.constants.MAIN_DATA
 import com.auf.cea.openweatherapilesson.constants.MODEL_DATA
 import com.auf.cea.openweatherapilesson.databinding.ContentForecastRvBinding
 import com.auf.cea.openweatherapilesson.models.ForecastModel
+import com.auf.cea.openweatherapilesson.models.MainForecastModel
 import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
 import com.bumptech.glide.Glide
-import java.text.SimpleDateFormat
-import java.util.*
 import kotlin.collections.ArrayList
 
 class WeatherAdapter(private var forecastList: ArrayList<ForecastModel>, private var context :Context) : RecyclerView.Adapter<WeatherAdapter.WeatherViewHolder>(){
+
+    private lateinit var mainForecastModel : ArrayList<MainForecastModel>
 
     inner class WeatherViewHolder(private val binding: ContentForecastRvBinding) : RecyclerView.ViewHolder(binding.root){
         fun bind (itemData: ForecastModel){
@@ -38,8 +39,11 @@ class WeatherAdapter(private var forecastList: ArrayList<ForecastModel>, private
                 .into(binding.imgWeather)
 
             binding.cvForecast.setOnClickListener{
+                val mainForecastModelData: MainForecastModel = mainForecastModel[0]
+
                 val intent = Intent(context, ViewMoreActivity::class.java)
                 intent.putExtra(MODEL_DATA, itemData)
+                intent.putExtra(MAIN_DATA,mainForecastModelData)
                 context.startActivity(intent)
                 Log.d(MainActivity::class.java.simpleName.toString(),itemData.toString())
             }
@@ -60,10 +64,13 @@ class WeatherAdapter(private var forecastList: ArrayList<ForecastModel>, private
         return forecastList.size
     }
 
-    fun updateData(forecastList: ArrayList<ForecastModel>){
+    fun updateData(forecastList: ArrayList<ForecastModel>, mainForecastData: ArrayList<MainForecastModel>){
         this.forecastList = arrayListOf()
+        this.mainForecastModel = arrayListOf()
         notifyDataSetChanged()
         this.forecastList = forecastList
+        this.mainForecastModel = mainForecastData
         this.notifyItemInserted(this.forecastList.size)
     }
 }
+

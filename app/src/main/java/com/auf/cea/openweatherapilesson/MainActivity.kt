@@ -7,15 +7,14 @@ import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.core.view.isGone
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.auf.cea.openweatherapilesson.adapter.WeatherAdapter
 import com.auf.cea.openweatherapilesson.constants.API_KEY
 import com.auf.cea.openweatherapilesson.constants.BASE_IMAGE_URL
 import com.auf.cea.openweatherapilesson.databinding.ActivityMainBinding
 import com.auf.cea.openweatherapilesson.models.ForecastModel
 import com.auf.cea.openweatherapilesson.models.LocationModel
+import com.auf.cea.openweatherapilesson.models.MainForecastModel
 import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
 import com.auf.cea.openweatherapilesson.services.helper.RetrofitHelper
 import com.auf.cea.openweatherapilesson.services.repository.OpenWeatherAPI
@@ -30,6 +29,7 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
     private lateinit var adapter: WeatherAdapter
     private lateinit var forecastData: ArrayList<ForecastModel>
     private lateinit var locationList: ArrayList<LocationModel>
+    private lateinit var mainForecastData: ArrayList<MainForecastModel>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,6 +39,8 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         supportActionBar?.title = "Weather Application by Group 1"
 
         forecastData = arrayListOf()
+        mainForecastData = arrayListOf()
+
         adapter = WeatherAdapter(forecastData,this)
 
         val layoutManager = LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false)
@@ -46,12 +48,12 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
         binding.rvForecast.adapter = adapter
 
         locationList = arrayListOf(
-            LocationModel("Angeles City",15.1463554, 120.5245999),
-            LocationModel("Metro Manila", 14.5965788,120.9445407),
-            LocationModel("Cebu City",7.8370652,122.3735825)
+            LocationModel("Angeles City",15.145549, 120.5946859),
+            LocationModel("Makati City", 14.557076,121.0171529),
+            LocationModel("Cebu City",10.315542,123.8848808)
         )
 
-        val cityList = arrayOf("Angeles City", "Metro Manila", "Cebu City")
+        val cityList = arrayOf("Angeles City", "Makati City", "Cebu City")
 
         val spinnerAdapter = ArrayAdapter(this,android.R.layout.simple_spinner_item, cityList)
         binding.spnLocation.adapter = spinnerAdapter
@@ -67,10 +69,17 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             val weatherData = result.body()
 
             if(weatherData != null){
+
+
+                mainForecastData.clear()
+                mainForecastData.add(weatherData)
+
+                // Log.d(MainActivity::class.java.simpleName.toString(),mainForecastModel.toString())
+
                 forecastData.clear()
                 forecastData.addAll(weatherData.list)
                 withContext(Dispatchers.Main){
-                    adapter.updateData(forecastData)
+                    adapter.updateData(forecastData, mainForecastData)
                     updateBubbleDisplay(forecastData[0])
                 }
             }

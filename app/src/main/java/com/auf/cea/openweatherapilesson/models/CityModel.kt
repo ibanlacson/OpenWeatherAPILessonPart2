@@ -6,7 +6,7 @@ data class CityModel(
     var id: Int,
     var name: String,
     var population: Int,
-    var sunrise: Int,
-    var sunset: Int,
+    var sunrise: Long,
+    var sunset: Long,
     var timezone: Int
 ):java.io.Serializable
