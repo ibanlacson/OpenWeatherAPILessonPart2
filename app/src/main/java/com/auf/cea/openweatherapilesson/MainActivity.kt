@@ -16,6 +16,7 @@ import com.auf.cea.openweatherapilesson.models.ForecastModel
 import com.auf.cea.openweatherapilesson.models.LocationModel
 import com.auf.cea.openweatherapilesson.models.MainForecastModel
 import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
+import com.auf.cea.openweatherapilesson.services.helper.ImageHelper
 import com.auf.cea.openweatherapilesson.services.helper.RetrofitHelper
 import com.auf.cea.openweatherapilesson.services.repository.OpenWeatherAPI
 import com.bumptech.glide.Glide
@@ -97,9 +98,9 @@ class MainActivity : AppCompatActivity(), AdapterView.OnItemSelectedListener {
             txtHumidity.text = String.format("Humidity: %s%%", modelData.main.humidity)
             txtDay.text = GeneralHelper.getDay(modelData.dt)
             txtTime.text = GeneralHelper.getTime(modelData.dt)
+            val baseImageURL = ImageHelper.getImageLink(weatherData.main, modelData.sys.pod)
             Glide.with(this@MainActivity)
-                .load(BASE_IMAGE_URL+weatherData.icon+".png")
-                .override(200, 200)
+                .load(baseImageURL)
                 .into(imgBubbleIcon)
         }
     }

@@ -10,6 +10,7 @@ import com.auf.cea.openweatherapilesson.models.ForecastModel
 import com.auf.cea.openweatherapilesson.models.Main
 import com.auf.cea.openweatherapilesson.models.MainForecastModel
 import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
+import com.auf.cea.openweatherapilesson.services.helper.ImageHelper
 import com.bumptech.glide.Glide
 
 class ViewMoreActivity : AppCompatActivity() {
@@ -45,9 +46,9 @@ class ViewMoreActivity : AppCompatActivity() {
                 txtTemp.text = String.format("%s°C",modelData.main.temp)
                 txtWeatherType.text = weatherData.main
                 txtCollatedTemp.text = String.format("Min: %s°C | Max: %s°C",modelData.main.temp_min,modelData.main.temp_max)
+                val baseImageURL = ImageHelper.getImageLink(weatherData.main, modelData.sys.pod)
                 Glide.with(this@ViewMoreActivity)
-                    .load(BASE_IMAGE_URL+weatherData.icon+"@2x.png")
-                    .override(200, 200)
+                    .load(baseImageURL)
                     .into(imgIcon)
 
                 // LL3 - Row 1
