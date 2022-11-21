@@ -1,6 +1,9 @@
 package com.auf.cea.openweatherapilesson.services.helper
 
 import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
@@ -17,6 +20,16 @@ class GeneralHelper {
 
         fun getDate(timeStamp: Long): String{
             return SimpleDateFormat("MMMM d", Locale.ENGLISH).format(timeStamp * 1000)
+        }
+
+        fun getPOD(timeStamp: Long): String{
+            val pod = SimpleDateFormat("a", Locale.ENGLISH).format(timeStamp * 1000)
+
+            if (pod == "PM") {
+                return "n"
+            } else {
+                return "d"
+            }
         }
 
         fun getPop(population: Int): String{

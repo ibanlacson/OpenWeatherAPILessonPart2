@@ -3,11 +3,18 @@ package com.auf.cea.openweatherapilesson
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isGone
+import androidx.core.view.isVisible
 import com.auf.cea.openweatherapilesson.constants.API_KEY
 import com.auf.cea.openweatherapilesson.databinding.ActivitySearchCityBinding
+import com.auf.cea.openweatherapilesson.models.currentweather.CurrentWeatherModel
 import com.auf.cea.openweatherapilesson.models.geocode.GeoCodingModelItem
+import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
+import com.auf.cea.openweatherapilesson.services.helper.ImageHelper
 import com.auf.cea.openweatherapilesson.services.helper.RetrofitHelper
+import com.auf.cea.openweatherapilesson.services.repository.CurrentWeatherAPI
 import com.auf.cea.openweatherapilesson.services.repository.GeoCodeAPI
+import com.bumptech.glide.Glide
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -30,27 +37,79 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
             (R.id.btn_search) -> {
                 var inputCity = binding.txtSearchCity.text.toString()
                 getCoordinates(inputCity)
+                binding.llCityView.isGone = false
             }
         }
     }
 
     private fun getCurrentWeatherData(lat: Double, lon:Double){
+        val currentWeatherAPI = RetrofitHelper.getInstance().create(CurrentWeatherAPI::class.java)
 
+        GlobalScope.launch(Dispatchers.IO){
+            val currentWeatherResult = currentWeatherAPI.getCurrentWeather(lat,lon, API_KEY, "metric")
+            val currentWeatherData = currentWeatherResult.body()
+
+            if(currentWeatherData != null) {
+                withContext(Dispatchers.Main){
+                    updateCityForecastView(currentWeatherData)
+                }
+            }
+        }
     }
 
     private fun getCoordinates(city:String){
         val geoCodeAPI = RetrofitHelper.getInstance().create(GeoCodeAPI::class.java)
 
         GlobalScope.launch(Dispatchers.IO) {
-            val result = geoCodeAPI.getGeoCode(city,1, API_KEY)
-            val geoCode = result.body()
+            val getCoordinatesResult = geoCodeAPI.getGeoCode(city,1, API_KEY)
+            val geoCode = getCoordinatesResult.body()
 
             if(geoCode != null) {
                 geoCodingData = geoCode[0]
                 withContext(Dispatchers.Main){
-                    binding.txtLatLon.text = String.format("Lat: %s | Lon: %s", geoCodingData.lat, geoCodingData.lon)
+                    var inputLat =geoCodingData.lat
+                    var inputLon =geoCodingData.lon
+
+                    //showAnimation()
+                    getCurrentWeatherData(inputLat,inputLon)
                 }
             }
+        }
+    }
+
+    private fun updateCityForecastView(forecastData:CurrentWeatherModel){
+        binding.llCityView.isVisible = true
+        val dateValue = GeneralHelper.getDate(forecastData.dt)
+        val dayValue = GeneralHelper.getDay(forecastData.dt)
+        val timeValue = GeneralHelper.getTime(forecastData.dt)
+        val weatherData = forecastData.weather[0]
+        with(binding){
+            // LL1
+            txtCity.text = forecastData.name.toString()
+            txtTimeAndDate.text = String.format("%s | %s | %s", dateValue, dayValue, timeValue)
+
+            // LL2
+            txtTemp.text = String.format("%s°C",forecastData.main.temp)
+            txtWeatherType.text = weatherData.main
+            txtCollatedTemp.text = String.format("Min: %s°C | Max: %s°C",forecastData.main.temp_min,forecastData.main.temp_max)
+            val baseImageURL = ImageHelper.getImageLink(weatherData.main, GeneralHelper.getPOD(forecastData.dt))
+            Glide.with(this@SearchCityActivity)
+                .load(baseImageURL)
+                .into(imgCurrentIcon)
+
+            // LL3 - Row 1
+            txtWindSpeed.text = String.format("%s m/s", forecastData.wind.speed)
+            txtPrecipitationRate.text = String.format("%s mm", forecastData.rain)
+            txtHumidity.text = String.format("%s%%", forecastData.main.humidity)
+
+            // LL3 - Row 2
+            txtCloudiness.text = String.format("%s%%",forecastData.clouds.all)
+            txtVisibility.text = String.format("%s km",forecastData.visibility/1000)
+            txtPressure.text = String.format("%s hPa", forecastData.main.pressure)
+
+            // LL3 - Row 3
+            txtSunriseTime.text = GeneralHelper.getTime(forecastData.sys.sunrise)
+            txtSunsetTime.text = GeneralHelper.getTime(forecastData.sys.sunset)
         }
     }
 }
