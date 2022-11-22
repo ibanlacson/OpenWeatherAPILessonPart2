@@ -7,6 +7,8 @@ import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.auf.cea.openweatherapilesson.constants.API_KEY
+import com.auf.cea.openweatherapilesson.constants.HIGH_TEMP_ICON_URL
+import com.auf.cea.openweatherapilesson.constants.LOW_TEMP_ICON_URL
 import com.auf.cea.openweatherapilesson.databinding.ActivitySearchCityBinding
 import com.auf.cea.openweatherapilesson.models.currentweather.CurrentWeatherModel
 import com.auf.cea.openweatherapilesson.models.geocode.GeoCodingModelItem
@@ -41,8 +43,8 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
                     binding.txtSearchCity.error = "Required"
                     return
                 } else {
-                    showLoadingAnimation()
                     getCoordinates(inputCity)
+                    showLoadingAnimation()
                 }
 
             }
@@ -97,23 +99,32 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
             // LL2
             txtTemp.text = String.format("%s°C",forecastData.main.temp)
             txtWeatherType.text = weatherData.main
-            txtCollatedTemp.text = String.format("Min: %s°C | Max: %s°C",forecastData.main.temp_min,forecastData.main.temp_max)
             val baseImageURL = ImageHelper.getImageLink(weatherData.main, GeneralHelper.getPOD(forecastData.dt))
             Glide.with(this@SearchCityActivity)
                 .load(baseImageURL)
                 .into(imgCurrentIcon)
 
             // LL3 - Row 1
-            txtWindSpeed.text = String.format("%s m/s", forecastData.wind.speed)
-            txtPrecipitationRate.text = String.format("%s mm", forecastData.rain)
+            txtMinTemp.text = String.format("%s°C", forecastData.main.temp_min)
+            txtMaxTemp.text = String.format("%s°C", forecastData.main.temp_max)
             txtHumidity.text = String.format("%s%%", forecastData.main.humidity)
 
+            Glide.with(this@SearchCityActivity)
+                .load(LOW_TEMP_ICON_URL)
+                .into(imgMinTemp)
+
+            Glide.with(this@SearchCityActivity)
+                .load(HIGH_TEMP_ICON_URL)
+                .into(imgMaxTemp)
+
             // LL3 - Row 2
+            txtWindSpeed.text = String.format("%s m/s", forecastData.wind.speed)
             txtCloudiness.text = String.format("%s%%",forecastData.clouds.all)
             txtVisibility.text = String.format("%s km",forecastData.visibility/1000)
-            txtPressure.text = String.format("%s hPa", forecastData.main.pressure)
+
 
             // LL3 - Row 3
+            txtPressure.text = String.format("%s hPa", forecastData.main.pressure)
             txtSunriseTime.text = GeneralHelper.getTime(forecastData.sys.sunrise)
             txtSunsetTime.text = GeneralHelper.getTime(forecastData.sys.sunset)
         }
