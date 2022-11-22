@@ -43,6 +43,7 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
                     binding.txtSearchCity.error = "Required"
                     return
                 } else {
+                    inputCity = inputCity.replace(" City","",true)
                     getCoordinates(inputCity)
                     showLoadingAnimation()
                 }
