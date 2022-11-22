@@ -22,13 +22,11 @@ class MainMenuActivity : AppCompatActivity(), View.OnClickListener {
         when(p0!!.id) {
             (R.id.btn_five_day) -> {
                  val intent = Intent(this@MainMenuActivity,MainActivity::class.java)
-                intent.flags= Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
 
             }
             (R.id.btn_search_city) -> {
                  val intent = Intent(this@MainMenuActivity,SearchCityActivity::class.java)
-                intent.flags= Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
         }
