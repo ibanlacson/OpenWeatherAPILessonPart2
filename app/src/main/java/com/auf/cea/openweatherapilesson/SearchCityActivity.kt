@@ -26,12 +26,13 @@ import kotlinx.coroutines.withContext
 class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var binding : ActivitySearchCityBinding
     private lateinit var geoCodingData : GeoCodingModelItem
+    private var cityName = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySearchCityBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
+        supportActionBar?.title = "City Forecast"
         binding.btnSearch.setOnClickListener(this)
     }
 
@@ -44,6 +45,7 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
                     return
                 } else {
                     inputCity = inputCity.replace(" City","",true)
+                    cityName = "$inputCity City"
                     getCoordinates(inputCity)
                     showLoadingAnimation()
                 }
@@ -77,8 +79,8 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
             if(geoCode != null) {
                 geoCodingData = geoCode[0]
                 withContext(Dispatchers.Main){
-                    var inputLat =geoCodingData.lat
-                    var inputLon =geoCodingData.lon
+                    val inputLat =geoCodingData.lat
+                    val inputLon =geoCodingData.lon
 
                     getCurrentWeatherData(inputLat,inputLon)
                 }
@@ -94,7 +96,7 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
         val weatherData = forecastData.weather[0]
         with(binding){
             // LL1
-            txtCity.text = forecastData.name.toString()
+            txtCity.text = cityName
             txtTimeAndDate.text = String.format("%s | %s | %s", dateValue, dayValue, timeValue)
 
             // LL2
