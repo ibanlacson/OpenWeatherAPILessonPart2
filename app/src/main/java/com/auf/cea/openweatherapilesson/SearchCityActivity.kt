@@ -2,6 +2,7 @@ package com.auf.cea.openweatherapilesson
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
@@ -36,8 +37,14 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
         when(p0!!.id){
             (R.id.btn_search) -> {
                 var inputCity = binding.txtSearchCity.text.toString()
-                getCoordinates(inputCity)
-                binding.llCityView.isGone = false
+                if (inputCity.isEmpty()) {
+                    binding.txtSearchCity.error = "Required"
+                    return
+                } else {
+                    showLoadingAnimation()
+                    getCoordinates(inputCity)
+                }
+
             }
         }
     }
@@ -70,7 +77,6 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
                     var inputLat =geoCodingData.lat
                     var inputLon =geoCodingData.lon
 
-                    //showAnimation()
                     getCurrentWeatherData(inputLat,inputLon)
                 }
             }
@@ -111,5 +117,34 @@ class SearchCityActivity : AppCompatActivity(), View.OnClickListener {
             txtSunriseTime.text = GeneralHelper.getTime(forecastData.sys.sunrise)
             txtSunsetTime.text = GeneralHelper.getTime(forecastData.sys.sunset)
         }
+    }
+
+    private fun showLoadingAnimation() {
+        // Initial
+
+        binding.llCityView.isGone = false
+        binding.llCityViewContent.isGone = true
+
+        with(binding.animationLoading) {
+            isGone = false
+            playAnimation()
+        }
+
+        object : CountDownTimer(3000,1000) {
+            override fun onTick(p0: Long) {
+
+            }
+
+            override fun onFinish() {
+                binding.llCityView.isGone = false
+                binding.llCityViewContent.isGone = false
+
+                with(binding.animationLoading) {
+                    isGone = true
+                    cancelAnimation()
+                }
+            }
+
+        }.start()
     }
 }
