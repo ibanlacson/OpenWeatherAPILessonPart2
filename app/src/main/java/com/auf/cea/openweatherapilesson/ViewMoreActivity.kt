@@ -2,12 +2,10 @@ package com.auf.cea.openweatherapilesson
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.auf.cea.openweatherapilesson.constants.BASE_IMAGE_URL
 import com.auf.cea.openweatherapilesson.constants.MAIN_DATA
 import com.auf.cea.openweatherapilesson.constants.MODEL_DATA
 import com.auf.cea.openweatherapilesson.databinding.ActivityViewMoreBinding
 import com.auf.cea.openweatherapilesson.models.ForecastModel
-import com.auf.cea.openweatherapilesson.models.Main
 import com.auf.cea.openweatherapilesson.models.MainForecastModel
 import com.auf.cea.openweatherapilesson.services.helper.GeneralHelper
 import com.auf.cea.openweatherapilesson.services.helper.ImageHelper

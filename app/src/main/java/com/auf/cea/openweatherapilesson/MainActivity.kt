@@ -10,7 +10,6 @@ import androidx.core.view.isGone
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.auf.cea.openweatherapilesson.adapter.WeatherAdapter
 import com.auf.cea.openweatherapilesson.constants.API_KEY
-import com.auf.cea.openweatherapilesson.constants.BASE_IMAGE_URL
 import com.auf.cea.openweatherapilesson.databinding.ActivityMainBinding
 import com.auf.cea.openweatherapilesson.models.ForecastModel
 import com.auf.cea.openweatherapilesson.models.LocationModel
